@@ -2276,7 +2276,10 @@
       "src/app/layers/airQuality.js",
       "src/layers/airQuality/index.js",
       "src/layers/airQuality/model.js",
-      "src/layers/airQuality/source.js"
+      "src/layers/airQuality/source.js",
+      "src/app/layers/denmark.js",
+      "src/layers/denmark/index.js",
+      "src/layers/denmark/source.js"
     ],
     "external": [
       "hls.js",
@@ -2831,7 +2834,10 @@
       "src/app/layers/airQuality.js",
       "src/layers/airQuality/index.js",
       "src/layers/airQuality/model.js",
-      "src/layers/airQuality/source.js"
+      "src/layers/airQuality/source.js",
+      "src/app/layers/denmark.js",
+      "src/layers/denmark/index.js",
+      "src/layers/denmark/source.js"
     ],
     "external": [
       "hls.js",
@@ -3214,7 +3220,8 @@
       "src/layers/submarineCables/bundledSource.js",
       "src/layers/gnss/source.js",
       "src/layers/airQuality/model.js",
-      "src/layers/airQuality/source.js"
+      "src/layers/airQuality/source.js",
+      "src/layers/denmark/source.js"
     ],
     "external": []
   },
@@ -3615,6 +3622,20 @@
       "src/layers/airQuality/source.js",
       "src/sources/httpBody.js"
     ],
+    "external": []
+  },
+  "denmark": {
+    "exports": ["./layers/denmark"],
+    "modules": [
+      "src/layers/denmark/index.js",
+      "src/layers/denmark/source.js",
+      "src/sources/httpBody.js"
+    ],
+    "external": ["cesium"]
+  },
+  "denmark-source": {
+    "exports": ["./layers/denmark/source"],
+    "modules": ["src/layers/denmark/source.js", "src/sources/httpBody.js"],
     "external": []
   }
 }

@@ -69,6 +69,10 @@ const PANEL_GROUPS = [
     ],
   },
   {
+    label: 'Denmark',
+    ids: ['denmark'],
+  },
+  {
     label: 'Utilities',
     ids: ['directions', 'radio'],
   },

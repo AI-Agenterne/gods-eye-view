@@ -1,5 +1,12 @@
 # Changelog
 
+- Add the Denmark pack (fork): one `denmark` layer with 15 switchable Danish
+  datasets — mobile masts, every wind turbine, drone zones, military exercise
+  areas at sea, bunkers and fortifications, dumped munitions, wrecks,
+  navigational warnings, offshore wind farms, subsea cables and pipelines,
+  lighthouses, protected monuments, Natura 2000, shelters and gauging stations —
+  served through a cached, registry-only proxy with a headless QA gate.
+
 - Add Bogotá (Tembici, 250 stations) and Santiago de Chile (Bike Itaú, 200
   stations) to the GBFS bikeshare registry, the layer's first stations in
   Colombia and Chile. Both are PBSC feeds like the Brazilian Bike Itaú cities,

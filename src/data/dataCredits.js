@@ -177,6 +177,13 @@ export const DATA_CREDITS = [
       '· <a href="https://eccc-msc.github.io/open-data/licence/readme_en/" target="_blank" rel="noopener">ECCC Data Servers End-use Licence</a>',
   },
   {
+    key: 'denmark-pack',
+    html:
+      'Denmark: Mastedatabasen; Trafikstyrelsen drone zones; Danish Maritime Authority (Niord); ' +
+      'Slots- og Kulturstyrelsen (Fund og Fortidsminder); Miljøstyrelsen / Danmarks Miljøportal (Arealinformation, VanDa); ' +
+      'GeoFA; <a href="https://emodnet.ec.europa.eu/en/human-activities" target="_blank" rel="noopener">EMODnet Human Activities</a> (CC BY 4.0)',
+  },
+  {
     key: 'overture-military-names',
     html: 'Military area names: <a href="https://overturemaps.org" target="_blank" rel="noopener">Overture Maps Foundation</a> (ODbL)',
   },

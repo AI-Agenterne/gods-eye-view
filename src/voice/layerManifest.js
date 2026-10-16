@@ -269,6 +269,19 @@ const layers = [
     },
   },
   {
+    id: 'denmark',
+    aliases: ['denmark', 'danish data', 'danish layers', 'denmark pack'],
+    context: false,
+    query: {
+      fields: {
+        dataset: ['t'],
+        title: ['t'],
+        subtitle: ['t'],
+        category: ['t'],
+      },
+    },
+  },
+  {
     id: 'traffic',
     aliases: ['street traffic', 'road traffic', 'congestion'],
     context: false,

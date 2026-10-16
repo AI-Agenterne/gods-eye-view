@@ -50,6 +50,7 @@ export const CATALOG_SOURCE_CONTRACTS = Object.freeze({
   'gnss-integrity': contract(['gnss-integrity'], ['getSnapshot']),
   cables: contract(['telegeography-submarine-cables'], ['fetch']),
   transit: contract(['transit'], ['requestSnapshot', 'getHistory']),
+  denmark: contract(['denmark'], ['getCatalog', 'getFeatures']),
 });
 
 /** An omitted provider is unavailable, never an authoritative empty dataset. */

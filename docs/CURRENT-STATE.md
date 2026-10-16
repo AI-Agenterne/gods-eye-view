@@ -44,6 +44,22 @@ provider registration rejects compositions that cannot fit rather than truncatin
 identities. A malformed or duplicate entry invalidates the complete custom-switch
 field. Existing whole-link size limits still apply.
 
+## Denmark pack (fork) — October 16, 2026
+
+One layer, `denmark` (share token `5`, panel group "Denmark"), draws 15 Danish
+datasets. Its row has one chip per dataset; each chip switches that dataset on
+or off, and the selection is kept in local storage. A dataset loads from
+`/api/dk/features/<id>` the first time it is switched on. Points are drawn as a
+point-primitive collection; lines, areas and buffered points as entities. Drone
+zones are 120 m volumes. Clicking a feature opens the layer's own info card and
+publishes the selection to the context store.
+
+The proxy (`server/providers/denmark/`) owns every upstream URL, converts UTM 32/33
+to WGS84 itself, simplifies polygons, rounds to five decimals and caps a dataset
+at 120,000 features and 4 million vertices. A failed refresh serves the last
+good copy, marked `X-DK-Status: stale`, and backs off for five minutes.
+`node scripts/qa-denmark.mjs` proves the live path in a browser.
+
 ## God's Eye View in conversations — October 2, 2026
 
 Tool answers that can be shown in God's Eye View include a view: camera, layers,
