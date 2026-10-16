@@ -370,6 +370,8 @@
   "src/data/earthquakes.js",
   "src/app/layers/airQuality.js",
   "src/app/layers/denmark.js",
+  "src/tools/queries/denmark.js",
+  "src/tools/queries/denmark.test.mjs",
   "src/layers/denmark/index.js",
   "src/layers/denmark/source.js",
   "server/providers/denmark/datasets.js",

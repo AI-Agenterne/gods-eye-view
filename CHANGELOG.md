@@ -9,6 +9,9 @@
 - Denmark pack wave B: nine live datasets — DMI lightning, weather and sea
   level, roadworks and road temperatures, interconnector power flows, citizen
   air sensors, northern Autobahn warnings and a day of AIS ship tracks.
+- Add the `denmark_in_area` tool, and a Denmark section in
+  `military_awareness` (drone zones, sea exercise areas, fortifications,
+  dumped munitions and navigational warnings; empty outside Denmark).
 
 - Add Bogotá (Tembici, 250 stations) and Santiago de Chile (Bike Itaú, 200
   stations) to the GBFS bikeshare registry, the layer's first stations in

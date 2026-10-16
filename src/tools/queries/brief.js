@@ -10,6 +10,7 @@ import {
   resolveArea,
   resolvePoint,
 } from '../area.js';
+import { DENMARK_DEFENCE_DATASETS } from './denmark.js';
 
 const SECTION_LIMIT = 5;
 const AWARENESS_LIMIT = 10;
@@ -89,6 +90,17 @@ const AWARENESS_SECTIONS = [
     key: 'installations',
     tool: 'find_military_installations',
     args: (area) => ({ area: area.argument, limit: AWARENESS_LIMIT }),
+  },
+  {
+    // Denmark pack (fork): drone zones, sea exercise areas, fortifications,
+    // munitions and navigational warnings. Empty outside Danish coverage.
+    key: 'denmark',
+    tool: 'denmark_in_area',
+    args: (area) => ({
+      area: area.argument,
+      datasets: [...DENMARK_DEFENCE_DATASETS],
+      limit: AWARENESS_LIMIT,
+    }),
   },
 ];
 

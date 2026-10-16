@@ -32,6 +32,7 @@ export const TOOL_SURFACES = Object.freeze({
   find_aircraft: voiceOff,
   find_vessel: voiceOff,
   get_earthquakes: voiceOff,
+  denmark_in_area: voiceOff,
   get_active_fires: voiceOff,
   find_infrastructure: voiceOff,
   satellites_overhead: voiceOff,

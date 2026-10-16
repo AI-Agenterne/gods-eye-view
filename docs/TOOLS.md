@@ -296,7 +296,8 @@ and the development server's internal routes. See SECURITY.md.
 | `find_military_installations` | `installations` | OpenStreetMap military sites in an area of at most 10° per side |
 | `get_map_features` | `features` | Administrative areas, named places or monuments at a location (needs Overpass) |
 | `situation_brief` | `weather` | Weather, earthquakes, fires, aircraft, ships and cyclones for an area, by section |
-| `military_awareness` | `military` | Military and other aircraft, ships and military installations within 250 km of a point, by section |
+| `military_awareness` | `military` | Military and other aircraft, ships and military installations within 250 km of a point, by section; in Denmark also drone zones, sea exercise areas, fortifications, munitions and navigational warnings (fork) |
+| `denmark_in_area` | `denmark` | Denmark pack (fork) features touching an area, nearest first per dataset; without dataset ids it lists the catalog |
 | `get_hud_caption` | `weather`, `summary` | The app's heads-up display caption for an area |
 | `show_in_gods_eye_view` | `app` | A view in God's Eye View: the live panel in clients with MCP Apps, and a link everywhere; takes another answer's view or an area or camera, layers, style, map, marks and something to follow |
 | `panel_request` | `app` | Panel only: loads a path from the app's server for the God's Eye View panel |
