@@ -34,6 +34,13 @@ function record(name, ok, detail) {
   console.log(`  [${tag}] ${name}${detail ? `  — ${detail}` : ''}`);
 }
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+/** Close the first-run "Choose your first view" dialog if it is open. */
+const dismissFirstRun = (page) =>
+  page.evaluate(() =>
+    [...document.querySelectorAll('button, [role=button]')]
+      .find((b) => /explore manually/i.test(b.textContent || ''))
+      ?.click(),
+  );
 
 async function main() {
   let exitCode = 0;
@@ -177,16 +184,28 @@ async function main() {
       }
       return null;
     });
+    // The first-run dialog opens late and would swallow the click.
+    await dismissFirstRun(page);
     if (clicked) {
       await page.mouse.click(clicked.x, clicked.y);
       await sleep(800);
       const card = await page.evaluate(
         () => document.querySelector('.dk-card')?.innerText || '',
       );
+      const why = card
+        ? ''
+        : await page.evaluate(({ x, y }) => {
+            const picked = window.__godsEyeView.viewer.scene.pick({ x, y });
+            const id = picked?.id;
+            const top = document.elementFromPoint(x, y);
+            return `picked=${typeof id === 'object' ? `entity:${id?.id}` : String(id)} top=${top?.tagName}`;
+          }, clicked);
       record(
         'clicking a feature opens its card',
         Boolean(card),
-        card.split('\n').slice(0, 3).join(' | '),
+        card
+          ? card.split('\n').slice(0, 3).join(' | ')
+          : `target=${clicked.id} at ${Math.round(clicked.x)},${Math.round(clicked.y)} ${why}`,
       );
     } else {
       record(
@@ -197,13 +216,7 @@ async function main() {
     }
 
     if (SHOT) {
-      // Keep the info card in the shot but let the scene settle around it;
-      // the first-run dialog can open after the earlier Escape, so close it.
-      await page.evaluate(() =>
-        [...document.querySelectorAll('button, [role=button]')]
-          .find((b) => /explore manually/i.test(b.textContent || ''))
-          ?.click(),
-      );
+      await dismissFirstRun(page);
       await sleep(2000);
       await page.screenshot({ path: SHOT });
       console.log(`  screenshot → ${SHOT}`);

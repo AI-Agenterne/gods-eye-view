@@ -111,6 +111,17 @@ cached in `.gev-cache/dk/` for its own TTL and served stale if its source fails.
 | **VanDa** (`vandah.miljoeportal.dk/api/stations`) | Stream, lake, sea and harbour gauging stations (UTM 32 → WGS84) | Danish public open data | "VanDa — Danmarks Miljøportal" |
 | **Energistyrelsen turbine register** (`ens.dk/media/<id>/download`, link read from the ENS data page each refresh) | Every grid-connected wind turbine with hub height, rotor, capacity and last-12-month production; turbines without coordinates in the register are skipped | Danish public open data | "Energistyrelsen — stamdataregister for vindmøller" |
 
+Live datasets (wave B), refreshed on their own TTL:
+
+| Source | Used for | License / terms | Attribution |
+| --- | --- | --- | --- |
+| **DMI Open Data** (`opendataapi.dmi.dk`, keyless since Dec 2025) | Lightning in the last hour, latest temperature and wind per weather station, latest sea level per tide gauge | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | "DMI — Danmarks Meteorologiske Institut" |
+| **Vejdirektoratet trafikkort** (`storage.googleapis.com/trafikkort-data/geojson/25832/*`) | Roadworks, incidents, queues, closures, slippery road, wind warnings, gritters and road-surface temperatures | The public web map's own feed, **not an official API**; the official CC BY feed is on the National Access Point (login). Keep local | "Vejdirektoratet" |
+| **Energi Data Service** (`api.energidataservice.dk/dataset/PowerSystemRightNow`) | Minute-by-minute flows on the nine interconnectors, wind, solar and CO₂ | Energi Data Service terms (free, attribution) | "Energinet — Energi Data Service" |
+| **Sensor.Community** (`data.sensor.community/airrohr/v1/filter/country=DK`) | Outdoor PM2.5/PM10 citizen sensors, banded by EAQI | ODbL 1.0 | "Sensor.Community" |
+| **Autobahn GmbH** (`verkehr.autobahn.de/o/autobahn/{road}/services/*`) | Warnings, roadworks and closures on A7, A1, A23, A210 and A215 north of Hamburg | Public API | "Die Autobahn GmbH des Bundes" |
+| **DMA historical AIS** (`aisdata.ais.dk`, newest `aisdk-YYYY-MM-DD.zip`) | "A day of shipping": the newest published day (~500 MB) streamed once, sampled to one point per ship per 5 minutes and split at signal gaps; cached 7 days | DMA AIS data terms | "Danish Maritime Authority" |
+
 ### Local receiver input (not fetched from a service)
 
 The optional Local ADS-B layer and the broadcast-FM receiver use radio you receive yourself: a USB RTL-SDR opened in the browser through WebUSB, or the `aircraft.json` of a decoder you run on your own machine or network (`LOCAL_RECEIVER_FEEDS`). Radio samples, audio and the optional receiver location stay in the browser. Decoder feeds are read by your local GEV server and relayed only to your browser, with about a second of in-memory caching. When you select a local aircraft, its ICAO address (and an airline-style callsign) is looked up, and aircraft that qualify for a 3D model are looked up by ICAO address, through the same adsbdb proxy the public flight layers use; your server caches those answers on disk and treats them as fresh for 24 hours. Received radio data is not stored or redistributed. ADS-B is an unauthenticated public broadcast and may be incomplete, delayed, spoofed or decoded in error; it is not suitable for navigation or operational use.

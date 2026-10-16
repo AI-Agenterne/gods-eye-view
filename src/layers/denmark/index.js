@@ -15,6 +15,8 @@ const DEFAULT_DATASETS = [
 const EXTRUDE_M = { 'drone-zones': 120 };
 /** Dense national registers draw smaller so sparse layers stay legible. */
 const POINT_SIZE = {
+  lightning: 10,
+  'power-flows': 12,
   monuments: 4,
   masts: 5,
   wrecks: 5,
@@ -171,7 +173,7 @@ export function createDenmarkLayer({ source, services = {} } = {}) {
           id: `${id}:${entities.values.length}`,
           polyline: {
             positions: Cesium.Cartesian3.fromDegreesArray(coords.flat()),
-            width: 2.5,
+            width: props.width || 2.5,
             material: color.withAlpha(0.9),
             clampToGround: true,
           },
@@ -236,11 +238,8 @@ export function createDenmarkLayer({ source, services = {} } = {}) {
     if (!dataset || !viewer) return;
     const bucket = bucketFor(id);
     if (bucket.loading) return bucket.loading;
-    if (
-      !force &&
-      bucket.loadedAt &&
-      Date.now() - bucket.loadedAt < REFRESH_MS
-    ) {
+    const maxAge = Math.max(60_000, dataset.refreshMs || REFRESH_MS);
+    if (!force && bucket.loadedAt && Date.now() - bucket.loadedAt < maxAge) {
       showBucket(id, enabled && active.has(id));
       return;
     }
@@ -442,7 +441,8 @@ export function createDenmarkLayer({ source, services = {} } = {}) {
     name: 'Denmark',
     icon: '✚',
     source: 'Danish open data',
-    updateInterval: REFRESH_MS,
+    // Live datasets refresh on their own TTL; this is only the polling tick.
+    updateInterval: 60_000,
 
     init(v) {
       if (viewer) throw new Error('Denmark layer is already initialized');

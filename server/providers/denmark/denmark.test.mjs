@@ -156,3 +156,37 @@ test('proxy serves a dataset, caches it, and falls back to stale on failure', as
   assert.ok(JSON.parse(catalog.body).datasets.some((d) => d.id === 'masts'));
   await fsp.rm(cacheDir, { recursive: true, force: true });
 });
+
+test('zip streaming and AIS sampling keep one 5-minute track per ship', async () => {
+  const { deflateRawSync } = await import('node:zlib');
+  const { zipFirstEntryLines, sampleAisTracks, aisShipClass } =
+    await import('./ais.js');
+  const rows = [
+    '# Timestamp,Type of mobile,MMSI,Latitude,Longitude,Name,Ship type',
+  ];
+  for (let minute = 0; minute < 60; minute++) {
+    const mm = String(minute).padStart(2, '0');
+    rows.push(
+      `13/10/2026 10:${mm}:00,Class A,219000001,56.${String(minute).padStart(2, '0')},10.5,TEST SHIP,Military`,
+    );
+    rows.push(`13/10/2026 10:${mm}:00,Base Station,2190000,56.1,10.1,,`);
+  }
+  const csv = Buffer.from(rows.join('\n'));
+  const name = Buffer.from('aisdk.csv');
+  const header = Buffer.alloc(30);
+  header.writeUInt32LE(0x04034b50, 0);
+  header.writeUInt16LE(8, 8);
+  header.writeUInt16LE(name.length, 26);
+  const zip = Buffer.concat([
+    header,
+    name,
+    deflateRawSync(csv),
+    Buffer.alloc(64),
+  ]);
+  const body = new Response(zip).body;
+  const tracks = await sampleAisTracks(zipFirstEntryLines(body));
+  assert.equal(tracks.length, 1, 'base stations are dropped');
+  assert.equal(tracks[0].meta.name, 'TEST SHIP');
+  assert.equal(tracks[0].points.length, 12, 'one point per five minutes');
+  assert.equal(aisShipClass(tracks[0].meta.type), 'Military & police');
+});

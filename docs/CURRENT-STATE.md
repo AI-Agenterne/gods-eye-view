@@ -60,6 +60,15 @@ at 120,000 features and 4 million vertices. A failed refresh serves the last
 good copy, marked `X-DK-Status: stale`, and backs off for five minutes.
 `node scripts/qa-denmark.mjs` proves the live path in a browser.
 
+Wave B adds nine live datasets (24 in total): DMI lightning, weather stations and
+sea level; Vejdirektoratet roadworks/incidents and road temperatures; Energinet
+interconnector flows drawn as lines whose width follows the MW; citizen PM2.5
+sensors; northern Autobahn warnings; and a day of AIS ship tracks streamed from
+the newest DMA daily file (~30 s, cached a week). The catalog carries each
+dataset's `refreshMs`, and the layer polls every minute and refetches only the
+datasets past their own TTL. Live datasets may legitimately be empty (lightning
+on a calm day).
+
 ## God's Eye View in conversations — October 2, 2026
 
 Tool answers that can be shown in God's Eye View include a view: camera, layers,

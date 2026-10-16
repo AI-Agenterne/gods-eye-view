@@ -60,8 +60,8 @@ export function denmarkProxy({
   const failedAt = new Map();
 
   /** One bounded upstream GET; `read` consumes the body under the cap. */
-  const fetchCapped = async (url, maxBytes, read) => {
-    const signal = AbortSignal.timeout(timeoutMs);
+  const fetchCapped = async (url, maxBytes, read, deadlineMs = timeoutMs) => {
+    const signal = AbortSignal.timeout(deadlineMs);
     const response = await fetchImpl(url, {
       signal,
       headers: {
@@ -81,6 +81,9 @@ export function denmarkProxy({
     fetchCapped(url, maxBytes, readResponseTextCapped);
   const fetchBytes = async (url, maxBytes) =>
     Buffer.from(await fetchCapped(url, maxBytes, readResponseBytesCapped));
+  /** A streamed body for multi-hundred-MB archives; the caller bounds work. */
+  const fetchStream = (url, deadlineMs = 30 * 60_000) =>
+    fetchCapped(url, Infinity, (response) => response.body, deadlineMs);
 
   const diskPath = (id) => path.join(cacheDir, `${id}.json`);
 
@@ -97,9 +100,16 @@ export function denmarkProxy({
 
   async function refresh(dataset) {
     const features = normalizeDataset(
-      await dataset.load({ fetchJson, fetchText, fetchBytes }),
+      await dataset.load({
+        fetchJson,
+        fetchText,
+        fetchBytes,
+        fetchStream,
+        now: now(),
+      }),
     );
-    if (!features.length) throw new Error('dataset_empty');
+    if (!features.length && !dataset.allowEmpty)
+      throw new Error('dataset_empty');
     const at = now();
     const body = JSON.stringify({
       type: 'FeatureCollection',

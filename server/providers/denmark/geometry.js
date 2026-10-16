@@ -168,6 +168,7 @@ export function cleanText(value, max = 160) {
  * optional link. Empty rows are dropped.
  */
 export function displayProperties({
+  width,
   title,
   subtitle,
   rows = [],
@@ -186,5 +187,7 @@ export function displayProperties({
   if (typeof url === 'string' && /^https:\/\/[^\s]+$/.test(url))
     props.url = url;
   if (Number.isFinite(radiusM) && radiusM > 0) props.radiusM = radiusM;
+  if (Number.isFinite(width) && width > 0)
+    props.width = Math.round(width * 10) / 10;
   return props;
 }

@@ -377,6 +377,7 @@
   "server/providers/denmark/index.js",
   "server/providers/denmark/utm.js",
   "server/providers/denmark/xlsx.js",
+  "server/providers/denmark/ais.js",
   "server/providers/denmark/denmark.test.mjs",
   "scripts/qa-denmark.mjs",
   "src/layers/airQuality/index.js",

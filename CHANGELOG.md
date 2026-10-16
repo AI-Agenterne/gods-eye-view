@@ -6,6 +6,9 @@
   navigational warnings, offshore wind farms, subsea cables and pipelines,
   lighthouses, protected monuments, Natura 2000, shelters and gauging stations —
   served through a cached, registry-only proxy with a headless QA gate.
+- Denmark pack wave B: nine live datasets — DMI lightning, weather and sea
+  level, roadworks and road temperatures, interconnector power flows, citizen
+  air sensors, northern Autobahn warnings and a day of AIS ship tracks.
 
 - Add Bogotá (Tembici, 250 stations) and Santiago de Chile (Bike Itaú, 200
   stations) to the GBFS bikeshare registry, the layer's first stations in
