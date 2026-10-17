@@ -6,6 +6,7 @@ import { DEFENCE_DATASETS } from './defence.js';
 import { MOVEMENT_DATASETS } from './movement.js';
 import { ENVIRONMENT_DATASETS } from './environment.js';
 import { IMAGERY_DATASETS } from './imagery.js';
+import { CYBER_DATASETS } from './cyber.js';
 
 /**
  * The Denmark pack's server-side dataset registry.
@@ -1457,13 +1458,17 @@ DATASETS.push(
   ...MOVEMENT_DATASETS,
   ...ENVIRONMENT_DATASETS,
   ...IMAGERY_DATASETS,
+  ...CYBER_DATASETS,
 );
 
 export const DATASET_BY_ID = new Map(DATASETS.map((d) => [d.id, d]));
 
-/** The public, JSON-safe catalog the client renders its chips from. */
+/**
+ * The public, JSON-safe catalog the client renders its chips from. A keyed
+ * dataset whose `available()` is false (no key yet) is left out.
+ */
 export function publicCatalog() {
-  return DATASETS.map(
+  return DATASETS.filter((d) => d.available?.() ?? true).map(
     ({
       id,
       kind,

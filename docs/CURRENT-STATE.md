@@ -95,6 +95,11 @@ density. `denmark_in_area` skips raster entries. A DMI 2 km wind model was not
 added: GEV's wind renderer takes a global grid at 0.25° or coarser, which IFS
 already gives over Denmark.
 
+Wave E5 adds the first keyed Denmark dataset (37 in the catalog with a key):
+cyber exposure per city from Shodan's `host/count` facets. It is aggregates
+only — no device detail is read, stored or shown — and a registry entry can now
+carry `available()`, which hides it from the catalog while its key is unset.
+
 ## God's Eye View in conversations — October 2, 2026
 
 Tool answers that can be shown in God's Eye View include a view: camera, layers,

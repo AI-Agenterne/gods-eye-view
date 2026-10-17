@@ -77,6 +77,14 @@ export const KEY_SETUP_KEYS = Object.freeze([
     tier: 'free',
   }),
   Object.freeze({
+    id: 'shodan',
+    title: 'SHODAN',
+    unlocks: 'Denmark pack: exposed services per city (counts only)',
+    getUrl: 'https://account.shodan.io/',
+    envVars: Object.freeze(['SHODAN_API_KEY']),
+    tier: 'metered',
+  }),
+  Object.freeze({
     id: 'tomtom',
     title: 'TOMTOM',
     unlocks: 'Real live traffic (keyless runs a simulation)',

@@ -157,6 +157,13 @@ and EPSG:4326/3857. Tiles are kept in a 600-tile in-memory LRU.
 | --- | --- | --- | --- |
 | **EMODnet Human Activities WMS** (`ows.emodnet-humanactivities.eu/wms`, layer `vesseldensity_allavg`) | "Ship traffic density (annual)": EMSA vessel density, all ship types, annual average | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | "EMODnet Human Activities" |
 
+Cyber exposure (wave E5), keyed. `SHODAN_API_KEY` is read on the server only;
+without it the dataset is not listed.
+
+| Source | Used for | License / terms | Attribution |
+| --- | --- | --- | --- |
+| **Shodan** (`api.shodan.io/shodan/host/count`, 0 query credits) | "Cyber exposure per city": internet-facing services per Danish city, with counts for ICS ports, remote access, open databases and RTSP video, plus a national summary of top ports and products. Five sequential queries, spaced 1.1 s, refreshed daily. **Aggregates only**: the loader reads `total` and facet `{value, count}` pairs and never `matches`, so no IP, hostname, organisation, banner or screenshot reaches the client or `denmark_in_area` (unit-tested). City names are placed from a static table; the rest are counted as "not placed" | Shodan API terms (attribution, no redistribution). Keep local | "Data © Shodan" |
+
 ### Local receiver input (not fetched from a service)
 
 The optional Local ADS-B layer and the broadcast-FM receiver use radio you receive yourself: a USB RTL-SDR opened in the browser through WebUSB, or the `aircraft.json` of a decoder you run on your own machine or network (`LOCAL_RECEIVER_FEEDS`). Radio samples, audio and the optional receiver location stay in the browser. Decoder feeds are read by your local GEV server and relayed only to your browser, with about a second of in-memory caching. When you select a local aircraft, its ICAO address (and an airline-style callsign) is looked up, and aircraft that qualify for a 3D model are looked up by ICAO address, through the same adsbdb proxy the public flight layers use; your server caches those answers on disk and treats them as fresh for 24 hours. Received radio data is not stored or redistributed. ADS-B is an unauthenticated public broadcast and may be incomplete, delayed, spoofed or decoded in error; it is not suitable for navigation or operational use.

@@ -24,6 +24,8 @@
   University air-quality index and weather balloons in flight.
 - Denmark pack wave E4: a registry-only WMS tile proxy for raster overlays,
   starting with EMODnet's annual ship-traffic density heatmap.
+- Denmark pack wave E5: cyber exposure per city from Shodan (keyed,
+  server-side, aggregate counts only — no IP or organisation is ever passed on).
 
 - Add Bogotá (Tembici, 250 stations) and Santiago de Chile (Bike Itaú, 200
   stations) to the GBFS bikeshare registry, the layer's first stations in

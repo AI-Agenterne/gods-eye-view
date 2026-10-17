@@ -183,7 +183,8 @@ export const DATA_CREDITS = [
       'Slots- og Kulturstyrelsen (Fund og Fortidsminder); Miljøstyrelsen / Danmarks Miljøportal (Arealinformation, VanDa); ' +
       'GeoFA; <a href="https://emodnet.ec.europa.eu/en/human-activities" target="_blank" rel="noopener">EMODnet Human Activities</a> (CC BY 4.0); ' +
       '<a href="https://gpsjam.org/" target="_blank" rel="noopener">GPSJam.org</a>; ' +
-      '<a href="https://www.opensanctions.org/" target="_blank" rel="noopener">OpenSanctions</a> (CC BY-NC 4.0); OurAirports; Rejseplanen (timetable GTFS); Vejdirektoratet; Energinet; Plandata.dk; Danmarks Statistik; Aarhus University (Holger); SondeHub (CC BY-SA 2.0)',
+      '<a href="https://www.opensanctions.org/" target="_blank" rel="noopener">OpenSanctions</a> (CC BY-NC 4.0); OurAirports; Rejseplanen (timetable GTFS); Vejdirektoratet; Energinet; Plandata.dk; Danmarks Statistik; Aarhus University (Holger); SondeHub (CC BY-SA 2.0); ' +
+      '<a href="https://www.shodan.io/" target="_blank" rel="noopener">Data © Shodan</a> (aggregate counts)',
   },
   {
     key: 'overture-military-names',
