@@ -2,6 +2,7 @@ import { cleanText, displayProperties } from './geometry.js';
 import { utmToLonLat } from './utm.js';
 import { readFirstSheet } from './xlsx.js';
 import { aisShipClass, sampleAisTracks, zipFirstEntryLines } from './ais.js';
+import { DEFENCE_DATASETS } from './defence.js';
 
 /**
  * The Denmark pack's server-side dataset registry.
@@ -1447,6 +1448,8 @@ DATASETS.push({
     return { features, tolerance: 0.0005 };
   },
 });
+
+DATASETS.push(...DEFENCE_DATASETS);
 
 export const DATASET_BY_ID = new Map(DATASETS.map((d) => [d.id, d]));
 

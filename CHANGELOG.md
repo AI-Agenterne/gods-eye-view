@@ -12,6 +12,9 @@
 - Add the `denmark_in_area` tool, and a Denmark section in
   `military_awareness` (drone zones, sea exercise areas, fortifications,
   dumped munitions and navigational warnings; empty outside Denmark).
+- Denmark pack wave E1: GPS jamming hexes, firing areas and exercises,
+  sanctioned and shadow-fleet ships seen in the AIS day, and airfields and
+  navaids. The first three join the Denmark section of `military_awareness`.
 
 - Add Bogotá (Tembici, 250 stations) and Santiago de Chile (Bike Itaú, 200
   stations) to the GBFS bikeshare registry, the layer's first stations in

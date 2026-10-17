@@ -24,6 +24,9 @@ export const DENMARK_DEFENCE_DATASETS = Object.freeze([
   'military-heritage',
   'munitions',
   'nav-warnings',
+  'firing-areas',
+  'gps-jamming',
+  'shadow-fleet',
 ]);
 
 const intersectsCoverage = (area) =>

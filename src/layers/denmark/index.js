@@ -10,6 +10,7 @@ const DEFAULT_DATASETS = [
   'nav-warnings',
   'wind-farms',
   'subsea-lines',
+  'gps-jamming',
 ];
 /** Datasets drawn as 3D volumes, with their ceiling in metres. */
 const EXTRUDE_M = { 'drone-zones': 120 };

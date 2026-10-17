@@ -122,6 +122,15 @@ Live datasets (wave B), refreshed on their own TTL:
 | **Autobahn GmbH** (`verkehr.autobahn.de/o/autobahn/{road}/services/*`) | Warnings, roadworks and closures on A7, A1, A23, A210 and A215 north of Hamburg | Public API | "Die Autobahn GmbH des Bundes" |
 | **DMA historical AIS** (`aisdata.ais.dk`, newest `aisdk-YYYY-MM-DD.zip`) | "A day of shipping": the newest published day (~500 MB) streamed once, sampled to one point per ship per 5 minutes and split at signal gaps; cached 7 days | DMA AIS data terms | "Danish Maritime Authority" |
 
+Defence datasets (wave E1):
+
+| Source | Used for | License / terms | Attribution |
+| --- | --- | --- | --- |
+| **GPSJam** (`gpsjam.org/data/manifest.csv` + `<day>-h3_4.csv`) | Daily H3 cells where aircraft report degraded GPS (2–10% and >10% bands, at least 3 aircraft), from the Baltic to the North Sea. The newest day not flagged suspect | Free use with attribution | "GPSJam.org" |
+| **Niord firing areas** (`niord.dma.dk/rest/public/v1/messages?messageSeries=dma-fa` and `dma-fe`) | Permanent firing areas at sea and active firing exercises | Danish public open data | "Danish Maritime Authority — Niord" |
+| **OpenSanctions maritime** (`data.opensanctions.org/datasets/latest/maritime/`) | Vessels tagged sanctioned or shadow fleet, matched by IMO or MMSI against the AIS day; port-state detentions alone do not count | [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/). **Non-commercial: keep local** | "OpenSanctions" |
+| **OurAirports** (`davidmegginson.github.io/ourairports-data/{airports,navaids}.csv`) | Danish airports, airfields, heliports, air bases and navaids; closed fields dropped | Public domain | "OurAirports" |
+
 ### Local receiver input (not fetched from a service)
 
 The optional Local ADS-B layer and the broadcast-FM receiver use radio you receive yourself: a USB RTL-SDR opened in the browser through WebUSB, or the `aircraft.json` of a decoder you run on your own machine or network (`LOCAL_RECEIVER_FEEDS`). Radio samples, audio and the optional receiver location stay in the browser. Decoder feeds are read by your local GEV server and relayed only to your browser, with about a second of in-memory caching. When you select a local aircraft, its ICAO address (and an airline-style callsign) is looked up, and aircraft that qualify for a 3D model are looked up by ICAO address, through the same adsbdb proxy the public flight layers use; your server caches those answers on disk and treats them as fresh for 24 hours. Received radio data is not stored or redistributed. ADS-B is an unauthenticated public broadcast and may be incomplete, delayed, spoofed or decoded in error; it is not suitable for navigation or operational use.

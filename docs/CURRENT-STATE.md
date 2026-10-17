@@ -69,6 +69,12 @@ dataset's `refreshMs`, and the layer polls every minute and refetches only the
 datasets past their own TTL. Live datasets may legitimately be empty (lightning
 on a calm day).
 
+Wave E1 adds four defence datasets (28 in total): GPSJam interference hexes
+around the Baltic, Niord firing areas and exercises, sanctioned and
+shadow-fleet ships found by matching OpenSanctions against the AIS day (a
+loader may now read another dataset through the same cache), and Danish
+airfields, air bases and navaids. `military_awareness` reports the first three.
+
 ## God's Eye View in conversations — October 2, 2026
 
 Tool answers that can be shown in God's Eye View include a view: camera, layers,

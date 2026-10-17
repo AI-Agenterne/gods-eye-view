@@ -106,6 +106,10 @@ export function denmarkProxy({
         fetchBytes,
         fetchStream,
         now: now(),
+        /** Another dataset's normalized features, through this same cache. */
+        dataset: async (id) =>
+          JSON.parse((await resolve(DATASET_BY_ID.get(id))).entry.body)
+            .features,
       }),
     );
     if (!features.length && !dataset.allowEmpty)
