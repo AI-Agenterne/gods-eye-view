@@ -3,7 +3,6 @@ import assert from 'node:assert/strict';
 
 import {
   airfieldCategory,
-  csvObjects,
   firingFeatures,
   jammingFeatures,
   jammingLevel,
@@ -12,6 +11,7 @@ import {
   navaidFrequency,
   sanctionsIndex,
 } from './defence.js';
+import { csvObjects } from './csv.js';
 
 test('jamming bands follow GPSJam and ignore thin cells', () => {
   assert.equal(jammingLevel(1, 1), null, 'two aircraft is too few');

@@ -12,6 +12,7 @@ const GBFS_ALLOWED_HOSTS = new Set([
   'gbfs.urbansharing.com',
   'api.entur.io',
   'api.cyclocity.fr',
+  'stables.donkey.bike',
 ]);
 
 /**
@@ -22,6 +23,7 @@ const GBFS_ALLOWED_HOSTS = new Set([
 const GBFS_HOST_PATH_PREFIXES = new Map([
   ['api.entur.io', '/mobility/v2/gbfs/'],
   ['api.cyclocity.fr', '/contracts/'],
+  ['stables.donkey.bike', '/api/public/gbfs/'],
 ]);
 
 /**

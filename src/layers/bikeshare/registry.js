@@ -23,6 +23,26 @@ function bcycleEntry({
     ...buildBcycleUrls(systemId),
   };
 }
+function donkeyEntry({
+  id,
+  city,
+  centerLat,
+  centerLon,
+  systemId,
+  loadRadiusKm = 30,
+}) {
+  const base = `https://stables.donkey.bike/api/public/gbfs/3.0/${systemId}`;
+  return {
+    id,
+    city,
+    centerLat,
+    centerLon,
+    loadRadiusKm,
+    provider: 'Donkey Republic',
+    stationInformationUrl: `${base}/station_information.json`,
+    stationStatusUrl: `${base}/station_status.json`,
+  };
+}
 function urbanSharingEntry({
   id,
   city,
@@ -604,6 +624,25 @@ const RAW_GBFS_CITY_REGISTRY = [
       'https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_bs/en/station_status.json',
     provider: 'AMBici',
   },
+  // Donkey Republic hubs (GBFS 3.0, keyless). Copenhagen's feed reaches
+  // Hillerød, 32 km out; the Odense, Aalborg and Herning feeds were empty
+  // on 2026-10-17, so they are left out.
+  donkeyEntry({
+    id: 'donkey-copenhagen',
+    city: 'Copenhagen, Denmark',
+    centerLat: 55.6761,
+    centerLon: 12.5683,
+    systemId: 'donkey_copenhagen',
+    loadRadiusKm: 40,
+  }),
+  donkeyEntry({
+    id: 'donkey-aarhus',
+    city: 'Aarhus, Denmark',
+    centerLat: 56.1567,
+    centerLon: 10.2108,
+    systemId: 'donkey_aarhus',
+    loadRadiusKm: 15,
+  }),
 ];
 function normalizeRegistryEntry(entry) {
   const id = String(entry?.id || '')

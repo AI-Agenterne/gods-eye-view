@@ -75,6 +75,14 @@ shadow-fleet ships found by matching OpenSanctions against the AIS day (a
 loader may now read another dataset through the same cache), and Danish
 airfields, air bases and navaids. `military_awareness` reports the first three.
 
+Wave E2 adds two datasets (30 in total). "Public transport (timetable)" reads
+the Rejseplanen GTFS once per Danish calendar day and places every running
+trip between its stops every 20 s; it is the timetable, not live tracking, and
+the layer's poll tick is now 20 s. "Bridge clearances & weight limits" comes
+from the Road Directorate map feed. Donkey Republic hubs in Copenhagen and
+Aarhus join the bikeshare layer (GBFS 3.0, so `station_status` now also reads
+`num_vehicles_available` and RFC 3339 `last_reported`).
+
 ## God's Eye View in conversations — October 2, 2026
 
 Tool answers that can be shown in God's Eye View include a view: camera, layers,

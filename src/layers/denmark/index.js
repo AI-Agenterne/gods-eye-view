@@ -17,6 +17,8 @@ const EXTRUDE_M = { 'drone-zones': 120 };
 /** Dense national registers draw smaller so sparse layers stay legible. */
 const POINT_SIZE = {
   lightning: 10,
+  'transit-sim': 6,
+  bridges: 5,
   'power-flows': 12,
   monuments: 4,
   masts: 5,
@@ -28,6 +30,8 @@ const POINT_SIZE = {
 const POINT_DEPTH_TEST_DISTANCE_M = 2_000_000;
 /** Refetch an active dataset at most this often; the proxy caches per TTL. */
 const REFRESH_MS = 10 * 60_000;
+/** The fastest any dataset refetches (the timetable simulation, every 20 s). */
+const MIN_REFRESH_MS = 20_000;
 
 const readStoredSelection = () => {
   try {
@@ -239,7 +243,7 @@ export function createDenmarkLayer({ source, services = {} } = {}) {
     if (!dataset || !viewer) return;
     const bucket = bucketFor(id);
     if (bucket.loading) return bucket.loading;
-    const maxAge = Math.max(60_000, dataset.refreshMs || REFRESH_MS);
+    const maxAge = Math.max(MIN_REFRESH_MS, dataset.refreshMs || REFRESH_MS);
     if (!force && bucket.loadedAt && Date.now() - bucket.loadedAt < maxAge) {
       showBucket(id, enabled && active.has(id));
       return;
@@ -443,7 +447,7 @@ export function createDenmarkLayer({ source, services = {} } = {}) {
     icon: '✚',
     source: 'Danish open data',
     // Live datasets refresh on their own TTL; this is only the polling tick.
-    updateInterval: 60_000,
+    updateInterval: 20_000,
 
     init(v) {
       if (viewer) throw new Error('Denmark layer is already initialized');

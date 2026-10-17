@@ -1,5 +1,6 @@
 import { cellToBoundary } from 'h3-js';
 import { cleanText, displayProperties } from './geometry.js';
+import { csvObjects } from './csv.js';
 
 /**
  * Defence-related Denmark pack datasets: GPS jamming, firing areas,
@@ -124,44 +125,6 @@ export function firingFeatures(messages, category) {
   });
 }
 
-/** Minimal RFC 4180 CSV row splitter (quoted fields, doubled quotes). */
-export function csvRows(text) {
-  const rows = [];
-  let row = [];
-  let field = '';
-  let quoted = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (quoted) {
-      if (c === '"' && text[i + 1] === '"') {
-        field += '"';
-        i++;
-      } else if (c === '"') quoted = false;
-      else field += c;
-    } else if (c === '"') quoted = true;
-    else if (c === ',') {
-      row.push(field);
-      field = '';
-    } else if (c === '\n' || c === '\r') {
-      if (c === '\r' && text[i + 1] === '\n') i++;
-      row.push(field);
-      if (row.length > 1 || row[0]) rows.push(row);
-      row = [];
-      field = '';
-    } else field += c;
-  }
-  if (field || row.length) rows.push([...row, field]);
-  return rows;
-}
-
-/** CSV text to objects keyed by the header row. */
-export function csvObjects(text) {
-  const [header, ...rows] = csvRows(text);
-  return rows.map((cells) =>
-    Object.fromEntries(header.map((name, i) => [name, cells[i] ?? ''])),
-  );
-}
-
 /** Index OpenSanctions maritime vessels that are sanctioned or shadow fleet. */
 export function sanctionsIndex(rows) {
   const byImo = new Map();
@@ -251,7 +214,7 @@ export const DEFENCE_DATASETS = [
   {
     id: 'gps-jamming',
     label: 'GPS jamming',
-    group: 'Defence',
+    group: 'Defence & airspace',
     color: '#f97316',
     categories: { 'High (>10%)': '#dc2626', 'Medium (2–10%)': '#f59e0b' },
     ttlMs: 6 * HOUR,
@@ -274,7 +237,7 @@ export const DEFENCE_DATASETS = [
   {
     id: 'firing-areas',
     label: 'Firing areas & exercises',
-    group: 'Defence',
+    group: 'Defence & airspace',
     color: '#ef4444',
     categories: { 'Firing area': '#ef4444', 'Firing exercise': '#fbbf24' },
     ttlMs: 30 * 60_000,
@@ -297,7 +260,7 @@ export const DEFENCE_DATASETS = [
   {
     id: 'shadow-fleet',
     label: 'Sanctioned & shadow-fleet ships',
-    group: 'Defence',
+    group: 'Defence & airspace',
     color: '#dc2626',
     categories: { 'Shadow fleet': '#dc2626', Sanctioned: '#a855f7' },
     ttlMs: 6 * HOUR,
@@ -328,7 +291,7 @@ export const DEFENCE_DATASETS = [
   {
     id: 'airfields',
     label: 'Airfields & navaids',
-    group: 'Defence',
+    group: 'Defence & airspace',
     color: '#38bdf8',
     categories: {
       Military: '#e879f9',

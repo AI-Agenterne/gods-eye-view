@@ -183,7 +183,7 @@ export const DATA_CREDITS = [
       'Slots- og Kulturstyrelsen (Fund og Fortidsminder); Miljøstyrelsen / Danmarks Miljøportal (Arealinformation, VanDa); ' +
       'GeoFA; <a href="https://emodnet.ec.europa.eu/en/human-activities" target="_blank" rel="noopener">EMODnet Human Activities</a> (CC BY 4.0); ' +
       '<a href="https://gpsjam.org/" target="_blank" rel="noopener">GPSJam.org</a>; ' +
-      '<a href="https://www.opensanctions.org/" target="_blank" rel="noopener">OpenSanctions</a> (CC BY-NC 4.0); OurAirports',
+      '<a href="https://www.opensanctions.org/" target="_blank" rel="noopener">OpenSanctions</a> (CC BY-NC 4.0); OurAirports; Rejseplanen (timetable GTFS); Vejdirektoratet',
   },
   {
     key: 'overture-military-names',
@@ -314,7 +314,7 @@ export const DATA_CREDITS = [
     html:
       'Bikeshare availability: GBFS operator feeds ' +
       '(e.g. Austin BCycle; Bike Share Toronto, operated by the Toronto Parking Authority; Bike Itaú and Tembici Bogotá, operated by Tembici; ' +
-      'Bicing, Barcelona City Council (B:SM); AMBici, Àrea Metropolitana de Barcelona, operated by nextbike)',
+      'Bicing, Barcelona City Council (B:SM); AMBici, Àrea Metropolitana de Barcelona, operated by nextbike; Donkey Republic Copenhagen and Aarhus)',
   },
   {
     key: 'urbansharing-gbfs',

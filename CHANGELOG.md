@@ -15,6 +15,10 @@
 - Denmark pack wave E1: GPS jamming hexes, firing areas and exercises,
   sanctioned and shadow-fleet ships seen in the AIS day, and airfields and
   navaids. The first three join the Denmark section of `military_awareness`.
+- Denmark pack wave E2: every Danish train, bus, metro and ferry placed from
+  the Rejseplanen timetable every 20 s, and bridge clearances and weight
+  limits. Donkey Republic Copenhagen and Aarhus join the bikeshare layer, which
+  now reads GBFS 3.0 station status.
 
 - Add Bogotá (Tembici, 250 stations) and Santiago de Chile (Bike Itaú, 200
   stations) to the GBFS bikeshare registry, the layer's first stations in

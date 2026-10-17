@@ -31,6 +31,13 @@ export function toNonNegativeInteger(value, fallback = null) {
   return Math.round(n);
 }
 
+/** Epoch seconds from an RFC 3339 timestamp, or null. */
+function isoSeconds(value) {
+  if (typeof value !== 'string') return null;
+  const ms = Date.parse(value);
+  return Number.isFinite(ms) && ms >= 0 ? Math.round(ms / 1000) : null;
+}
+
 /**
  * Extract the stations array from a GBFS JSON payload.
  * Handles multiple response shapes: { data: { stations: [...] } },
@@ -119,7 +126,10 @@ export function parseStationStatus(payload) {
     const stationId = String(raw?.station_id ?? raw?.id ?? '').trim();
     if (!stationId) continue;
 
-    const bikes = toNonNegativeInteger(raw?.num_bikes_available);
+    // GBFS v3 renames bikes to vehicles and reports time as RFC 3339.
+    const bikes = toNonNegativeInteger(
+      raw?.num_bikes_available ?? raw?.num_vehicles_available,
+    );
     const docks = toNonNegativeInteger(raw?.num_docks_available);
     statusMap.set(stationId, {
       stationId,
@@ -128,7 +138,9 @@ export function parseStationStatus(payload) {
       isInstalled: normalizeGbfsBool(raw?.is_installed, true),
       isRenting: normalizeGbfsBool(raw?.is_renting, true),
       isReturning: normalizeGbfsBool(raw?.is_returning, true),
-      lastReported: toNonNegativeInteger(raw?.last_reported),
+      lastReported:
+        toNonNegativeInteger(raw?.last_reported) ??
+        isoSeconds(raw?.last_reported),
     });
   }
 
