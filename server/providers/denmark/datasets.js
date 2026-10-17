@@ -4,6 +4,8 @@ import { readFirstSheet } from './xlsx.js';
 import { aisShipClass, sampleAisTracks, zipFirstEntryLines } from './ais.js';
 import { DEFENCE_DATASETS } from './defence.js';
 import { MOVEMENT_DATASETS } from './movement.js';
+import { ENVIRONMENT_DATASETS } from './environment.js';
+import { IMAGERY_DATASETS } from './imagery.js';
 
 /**
  * The Denmark pack's server-side dataset registry.
@@ -1450,7 +1452,12 @@ DATASETS.push({
   },
 });
 
-DATASETS.push(...DEFENCE_DATASETS, ...MOVEMENT_DATASETS);
+DATASETS.push(
+  ...DEFENCE_DATASETS,
+  ...MOVEMENT_DATASETS,
+  ...ENVIRONMENT_DATASETS,
+  ...IMAGERY_DATASETS,
+);
 
 export const DATASET_BY_ID = new Map(DATASETS.map((d) => [d.id, d]));
 
@@ -1459,6 +1466,7 @@ export function publicCatalog() {
   return DATASETS.map(
     ({
       id,
+      kind,
       label,
       group,
       color,
@@ -1470,6 +1478,7 @@ export function publicCatalog() {
       ttlMs,
     }) => ({
       id,
+      kind: kind || 'features',
       label,
       group,
       color,

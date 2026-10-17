@@ -96,7 +96,10 @@ export const denmarkInArea = defineTool({
   requires: ['denmark'],
   async run(args, { services, signal }) {
     const area = await resolveArea(args.area, { services, signal });
-    const catalog = await services.denmark.getCatalog({ signal });
+    // Raster overlays have no features to search.
+    const catalog = (await services.denmark.getCatalog({ signal })).filter(
+      (d) => d.kind !== 'wms',
+    );
     if (!args.datasets?.length)
       return {
         summary: `The Denmark pack has ${countNoun(catalog.length, 'dataset')}; pass dataset ids to query them.`,

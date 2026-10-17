@@ -6,11 +6,14 @@ import {
 } from '../common/http.js';
 import { DATASET_BY_ID, publicCatalog } from './datasets.js';
 import { normalizeGeometry, projector } from './geometry.js';
+import { wmsTileUrl } from './imagery.js';
 
 /** Hard ceilings so one runaway upstream cannot exhaust memory or the client. */
 const MAX_FEATURES = 120_000;
 const MAX_VERTICES = 4_000_000;
 const FAILURE_BACKOFF_MS = 5 * 60_000;
+const MAX_TILE_BYTES = 4 * 1024 * 1024;
+const MAX_CACHED_TILES = 600;
 
 /**
  * Normalize a dataset's loader output into the GeoJSON the client draws:
@@ -158,6 +161,54 @@ export function denmarkProxy({
     }
   }
 
+  /** Raster tiles, newest last; a small LRU so panning back is instant. */
+  const tiles = new Map();
+
+  async function serveTile(dataset, query, res) {
+    const url = wmsTileUrl(dataset, query);
+    if (!url) return send(res, 400, '{"error":"bad_tile_request"}');
+    const cached = tiles.get(url);
+    if (cached && now() - cached.at < dataset.ttlMs) {
+      tiles.delete(url);
+      tiles.set(url, cached);
+    } else {
+      try {
+        const bytes = await fetchCapped(
+          url,
+          MAX_TILE_BYTES,
+          async (response, maxBytes, signal) => {
+            const type = response.headers.get('content-type') || '';
+            if (!type.startsWith('image/')) {
+              await response.body?.cancel?.();
+              throw new Error('upstream_not_image');
+            }
+            return Buffer.from(
+              await readResponseBytesCapped(response, maxBytes, signal),
+            );
+          },
+          30_000,
+        );
+        tiles.set(url, { at: now(), bytes });
+        while (tiles.size > MAX_CACHED_TILES)
+          tiles.delete(tiles.keys().next().value);
+      } catch (error) {
+        return send(
+          res,
+          502,
+          JSON.stringify({
+            error: 'upstream_unavailable',
+            detail: error.message,
+          }),
+        );
+      }
+    }
+    res.writeHead(200, {
+      'Content-Type': 'image/png',
+      'Cache-Control': 'public, max-age=86400',
+    });
+    res.end(tiles.get(url).bytes);
+  }
+
   const send = (res, status, body, extra = {}) => {
     res.writeHead(status, {
       'Content-Type': 'application/json; charset=utf-8',
@@ -170,7 +221,15 @@ export function denmarkProxy({
   async function handle(req, res) {
     if (req.method !== 'GET')
       return send(res, 405, '{"error":"method_not_allowed"}');
-    const pathname = new URL(req.url || '/', 'http://localhost').pathname;
+    const requestUrl = new URL(req.url || '/', 'http://localhost');
+    const pathname = requestUrl.pathname;
+    const tile = /^\/wms\/([a-z0-9-]{1,40})$/.exec(pathname);
+    if (tile) {
+      const dataset = DATASET_BY_ID.get(tile[1]);
+      if (dataset?.kind !== 'wms')
+        return send(res, 404, '{"error":"unknown_dataset"}');
+      return serveTile(dataset, requestUrl.searchParams, res);
+    }
     if (pathname === '/datasets' || pathname === '/datasets/') {
       const catalog = publicCatalog().map((d) => ({
         ...d,
@@ -180,7 +239,8 @@ export function denmarkProxy({
     }
     const match = /^\/features\/([a-z0-9-]{1,40})$/.exec(pathname);
     const dataset = match && DATASET_BY_ID.get(match[1]);
-    if (!dataset) return send(res, 404, '{"error":"unknown_dataset"}');
+    if (!dataset || dataset.kind === 'wms')
+      return send(res, 404, '{"error":"unknown_dataset"}');
     try {
       const { entry, status } = await resolve(dataset);
       return send(res, 200, entry.body, {

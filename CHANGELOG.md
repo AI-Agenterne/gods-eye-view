@@ -19,6 +19,11 @@
   the Rejseplanen timetable every 20 s, and bridge clearances and weight
   limits. Donkey Republic Copenhagen and Aarhus join the bikeshare layer, which
   now reads GBFS 3.0 station status.
+- Denmark pack wave E3: substations with free grid capacity, wind and solar
+  per municipality, population density per municipality, the Aarhus
+  University air-quality index and weather balloons in flight.
+- Denmark pack wave E4: a registry-only WMS tile proxy for raster overlays,
+  starting with EMODnet's annual ship-traffic density heatmap.
 
 - Add Bogotá (Tembici, 250 stations) and Santiago de Chile (Bike Itaú, 200
   stations) to the GBFS bikeshare registry, the layer's first stations in

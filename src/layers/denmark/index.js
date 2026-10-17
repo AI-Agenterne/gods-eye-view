@@ -14,10 +14,19 @@ const DEFAULT_DATASETS = [
 ];
 /** Datasets drawn as 3D volumes, with their ceiling in metres. */
 const EXTRUDE_M = { 'drone-zones': 120 };
+/** Raster overlays are requested only over Denmark and its seas (W, S, E, N). */
+const IMAGERY_EXTENT = [3, 53, 18, 59.5];
+/** Choropleths fill more densely so their colour reads as the value. */
+const FILL_ALPHA = {
+  'renewables-by-municipality': 0.6,
+  'population-density': 0.6,
+};
 /** Dense national registers draw smaller so sparse layers stay legible. */
 const POINT_SIZE = {
   lightning: 10,
   'transit-sim': 6,
+  substations: 6,
+  radiosondes: 10,
   bridges: 5,
   'power-flows': 12,
   monuments: 4,
@@ -126,6 +135,23 @@ export function createDenmarkLayer({ source, services = {} } = {}) {
     if (!bucket) return;
     bucket.points.show = show;
     bucket.dataSource.show = show;
+    if (bucket.imagery) bucket.imagery.show = show;
+  }
+
+  /** Raster datasets are WMS tiles from the proxy, not features. */
+  function addImagery(dataset, bucket) {
+    if (bucket.imagery) return;
+    bucket.imagery = viewer.imageryLayers.addImageryProvider(
+      new Cesium.WebMapServiceImageryProvider({
+        url: `/api/dk/wms/${dataset.id}`,
+        layers: dataset.id,
+        parameters: { format: 'image/png', transparent: true },
+        rectangle: Cesium.Rectangle.fromDegrees(...IMAGERY_EXTENT),
+        maximumLevel: 12,
+        credit: dataset.credit,
+      }),
+    );
+    bucket.imagery.alpha = 0.8;
   }
 
   function draw(dataset, bucket) {
@@ -140,7 +166,9 @@ export function createDenmarkLayer({ source, services = {} } = {}) {
         featureColor(dataset, props),
       );
       const id = `${PICK_PREFIX}${dataset.id}:${index}`;
-      const fill = color.withAlpha(extrude ? 0.18 : 0.28);
+      const fill = color.withAlpha(
+        FILL_ALPHA[dataset.id] ?? (extrude ? 0.18 : 0.28),
+      );
       const addPoint = ([lon, lat]) => {
         if (props.radiusM) {
           entities.add({
@@ -243,6 +271,13 @@ export function createDenmarkLayer({ source, services = {} } = {}) {
     if (!dataset || !viewer) return;
     const bucket = bucketFor(id);
     if (bucket.loading) return bucket.loading;
+    if (dataset.kind === 'wms') {
+      addImagery(dataset, bucket);
+      bucket.loadedAt ||= Date.now();
+      showBucket(id, enabled && active.has(id));
+      requestRender();
+      return;
+    }
     const maxAge = Math.max(MIN_REFRESH_MS, dataset.refreshMs || REFRESH_MS);
     if (!force && bucket.loadedAt && Date.now() - bucket.loadedAt < maxAge) {
       showBucket(id, enabled && active.has(id));
@@ -500,6 +535,7 @@ export function createDenmarkLayer({ source, services = {} } = {}) {
       for (const bucket of buckets.values()) {
         viewer?.scene?.primitives?.remove(bucket.points);
         viewer?.dataSources?.remove(bucket.dataSource, true);
+        if (bucket.imagery) viewer?.imageryLayers?.remove(bucket.imagery, true);
       }
       buckets.clear();
       picking?.unregisterPickOwner?.(DENMARK_LAYER_ID);

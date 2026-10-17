@@ -139,6 +139,24 @@ Movement datasets (wave E2):
 | **Rejseplanen Labs GTFS** (`rejseplanen.info/labs/GTFS.zip`, ~55 MB) | "Public transport (timetable)": every train, S-train, metro, light rail, bus and ferry trip running today (and last night's tail), placed every 20 s by interpolating between stops. Read once per Danish calendar day. Flex (demand-responsive) trips are left out. **Scheduled positions, not live tracking** | Rejseplanen Labs terms; non-commercial. Keep local | "Rejseplanen" |
 | **Vejdirektoratet trafikkort** (`clearance-height`, `weight-restriction` point layers) | Bridge and tunnel clearances over state roads, and bridges below bearing class 60 | Same unofficial map feed as the wave B road layers. Keep local | "Vejdirektoratet" |
 
+Energy, statistics and environment (wave E3):
+
+| Source | Used for | License / terms | Attribution |
+| --- | --- | --- | --- |
+| **Energi Data Service** (`GridCapacityMapTSO`, `ConnectionPointsInGrid`, `CapacityPerMunicipality`) | Transmission substations with free capacity (newest publication, current grid preferred), grid connection points, and onshore wind + solar MW per municipality. The API rate-limits bursts (HTTP 429 with `Retry-After`); the proxy serves the cached copy meanwhile | Energi Data Service terms (free, attribution) | "Energinet — Energi Data Service" |
+| **Plandata.dk** (`geoserver.plandata.dk`, layer `pdk:theme_pdk_kommuneplan_oversigt_vedtaget`) | Municipality outlines for the choropleths: each municipality's current municipal-plan area, keyless. Memoised for a day and shared by both choropleths | Danish public open data | "Plandata.dk" |
+| **Statistics Denmark** (`api.statbank.dk/v1/data/FOLK1A`) | Population per municipality, newest quarter, divided by the outline's area | Open data with attribution | "Danmarks Statistik" |
+| **Holger, Aarhus University** (`holger.envs.au.dk/api/{point_info,aqindex_day}`) | Today's air-quality index (NO₂, O₃, PM) at 123 measuring and forecast points, mostly Greater Copenhagen | Public API, listed on opendata.dk by Københavns Kommune | "Aarhus University, Department of Environmental Science" |
+| **SondeHub** (`api.v2.sondehub.org/sondes`) | Radiosondes heard in the last three hours within 500 km of Denmark | CC BY-SA 2.0 (SondeHub wiki) | "SondeHub" |
+
+Raster overlays (wave E4), proxied as WMS tiles through `/api/dk/wms/<id>`. The
+registry fixes each upstream and layer; a tile request chooses only bbox, size
+and EPSG:4326/3857. Tiles are kept in a 600-tile in-memory LRU.
+
+| Source | Used for | License / terms | Attribution |
+| --- | --- | --- | --- |
+| **EMODnet Human Activities WMS** (`ows.emodnet-humanactivities.eu/wms`, layer `vesseldensity_allavg`) | "Ship traffic density (annual)": EMSA vessel density, all ship types, annual average | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | "EMODnet Human Activities" |
+
 ### Local receiver input (not fetched from a service)
 
 The optional Local ADS-B layer and the broadcast-FM receiver use radio you receive yourself: a USB RTL-SDR opened in the browser through WebUSB, or the `aircraft.json` of a decoder you run on your own machine or network (`LOCAL_RECEIVER_FEEDS`). Radio samples, audio and the optional receiver location stay in the browser. Decoder feeds are read by your local GEV server and relayed only to your browser, with about a second of in-memory caching. When you select a local aircraft, its ICAO address (and an airline-style callsign) is looked up, and aircraft that qualify for a 3D model are looked up by ICAO address, through the same adsbdb proxy the public flight layers use; your server caches those answers on disk and treats them as fresh for 24 hours. Received radio data is not stored or redistributed. ADS-B is an unauthenticated public broadcast and may be incomplete, delayed, spoofed or decoded in error; it is not suitable for navigation or operational use.

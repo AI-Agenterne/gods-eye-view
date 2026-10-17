@@ -83,6 +83,18 @@ from the Road Directorate map feed. Donkey Republic hubs in Copenhagen and
 Aarhus join the bikeshare layer (GBFS 3.0, so `station_status` now also reads
 `num_vehicles_available` and RFC 3339 `last_reported`).
 
+Wave E3 adds five datasets (35 in total): transmission substations with free
+grid capacity and grid connection points, onshore wind + solar and population
+density per municipality (the first choropleths, on keyless Plandata.dk
+outlines), the Aarhus University air-quality index, and radiosondes in flight.
+
+Wave E4 adds raster overlays: the registry can now hold `kind: 'wms'` entries,
+served as GetMap tiles through `/api/dk/wms/<id>` and drawn as a Cesium WMS
+imagery layer when their chip is on. The first is EMODnet's annual ship-traffic
+density. `denmark_in_area` skips raster entries. A DMI 2 km wind model was not
+added: GEV's wind renderer takes a global grid at 0.25° or coarser, which IFS
+already gives over Denmark.
+
 ## God's Eye View in conversations — October 2, 2026
 
 Tool answers that can be shown in God's Eye View include a view: camera, layers,
